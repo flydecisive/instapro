@@ -6,9 +6,8 @@ export function renderPostsPageComponent({ appEl }) {
   // TODO: реализовать рендер постов из api
   console.log("Актуальный список постов:", posts);
 
-  console.log(posts[0]);
+  console.log(posts[2]);
 
-  // сделать обработчик на лайк
   // сделать дату поста
 
   const postsHtml = posts.map((el) => {
@@ -22,7 +21,11 @@ export function renderPostsPageComponent({ appEl }) {
       </div>
       <div class="post-likes">
         <button data-post-id=${el.id} class="like-button">
-          <img src="./assets/images/like-active.svg">
+          <img src=${
+            el.isLiked
+              ? "./assets/images/like-active.svg"
+              : "./assets/images/like-not-active.svg"
+          }>
         </button>
         <p class="post-likes-text">
           Нравится: <strong>${el.likes.length}</strong>
@@ -37,9 +40,6 @@ export function renderPostsPageComponent({ appEl }) {
       </p>
     </li>`;
   });
-
-  console.log(postsHtml);
-
   /**
    * TODO: чтобы отформатировать дату создания поста в виде "19 минут назад"
    * можно использовать https://date-fns.org/v2.29.3/docs/formatDistanceToNow
