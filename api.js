@@ -1,7 +1,7 @@
 // Замени на свой, чтобы получить независимый от других набор данных.
 // "боевая" версия инстапро лежит в ключе prod
-const personalKey = "prod";
-// const personalKey = "flydecisive";
+// const personalKey = "prod";
+const personalKey = "flydecisive";
 const baseHost = "https://webdev-hw-api.vercel.app";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
 
@@ -62,6 +62,23 @@ export function uploadImage({ file }) {
   return fetch(baseHost + "/api/upload/image", {
     method: "POST",
     body: data,
+  }).then((response) => {
+    return response.json();
+  });
+}
+
+export function addPost({ description, imageUrl }) {
+  const { token } = JSON.parse(localStorage.getItem("user"));
+
+  return fetch(postsHost, {
+    method: "POST",
+    body: JSON.stringify({
+      description: description,
+      imageUrl: imageUrl,
+    }),
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   }).then((response) => {
     return response.json();
   });
