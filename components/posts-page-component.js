@@ -5,7 +5,6 @@ import { formatDistanceToNow } from "date-fns";
 import ruLocale from "date-fns/locale/ru";
 
 export function renderPostsPageComponent({ appEl, likeButtonClick }) {
-  console.log(posts);
   const postsHtml = posts.map((el) => {
     return `<li class="post">
       <div class="post-header" data-user-id=${el.user.id}>

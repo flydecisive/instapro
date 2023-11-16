@@ -36,10 +36,6 @@ export function renderUserPostsPageComponent({ appEl, likeButtonClick }) {
         </li>`;
   });
 
-  renderHeaderComponent({
-    element: document.querySelector(".header-container"),
-  });
-
   const appHtml = `
               <div class="page-container">
                 <div class="header-container"></div>
@@ -53,6 +49,10 @@ export function renderUserPostsPageComponent({ appEl, likeButtonClick }) {
               </div>`;
 
   appEl.innerHTML = appHtml;
+
+  renderHeaderComponent({
+    element: document.querySelector(".header-container"),
+  });
 
   for (let likeEl of document.querySelectorAll(".like-button")) {
     likeEl.addEventListener("click", () => {
