@@ -10,6 +10,7 @@ export function renderUserPostsPageComponent({
 }) {
   const name = posts[0].user.name;
   const imageUrl = posts[0].user.imageUrl;
+  console.log(posts);
 
   const postsHtml = posts.map((el) => {
     return `<li class="post">
