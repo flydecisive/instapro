@@ -1,4 +1,4 @@
-import { getPosts, addPost, getUserPosts } from "./api.js";
+import { getPosts, addPost, getUserPosts, addLike, dislike } from "./api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
 import {
@@ -26,6 +26,18 @@ const getToken = () => {
   const token = user ? `Bearer ${user.token}` : undefined;
   return token;
 };
+
+function replacePost(post) {
+  const postId = post.id;
+  const newPosts = [...posts];
+  posts.forEach((el, index) => {
+    if (el.id === postId) {
+      newPosts[index] = post;
+    }
+  });
+
+  posts = newPosts;
+}
 
 export const logout = () => {
   user = null;
@@ -112,7 +124,7 @@ const renderApp = () => {
     return renderAddPostPageComponent({
       appEl,
       onAddPostClick({ description, imageUrl }) {
-        addPost({ description, imageUrl }).then((data) => {
+        addPost({ description, imageUrl, token: getToken() }).then((data) => {
           if (data) {
             goToPage(POSTS_PAGE);
           }
@@ -124,11 +136,39 @@ const renderApp = () => {
   if (page === POSTS_PAGE) {
     return renderPostsPageComponent({
       appEl,
+      likeButtonClick({ id, isLiked }) {
+        if (isLiked) {
+          dislike({ id, token: getToken() }).then((data) => {
+            replacePost(data.post);
+            renderApp();
+          });
+        } else {
+          addLike({ id, token: getToken() }).then((data) => {
+            replacePost(data.post);
+            renderApp();
+          });
+        }
+      },
     });
   }
 
   if (page === USER_POSTS_PAGE) {
-    return renderUserPostsPageComponent({ appEl });
+    return renderUserPostsPageComponent({
+      appEl,
+      likeButtonClick({ id, isLiked }) {
+        if (isLiked) {
+          dislike({ id, token: getToken() }).then((data) => {
+            replacePost(data.post);
+            renderApp();
+          });
+        } else {
+          addLike({ id, token: getToken() }).then((data) => {
+            replacePost(data.post);
+            renderApp();
+          });
+        }
+      },
+    });
   }
 };
 

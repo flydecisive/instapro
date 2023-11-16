@@ -4,7 +4,7 @@ import { posts, goToPage } from "../index.js";
 import { formatDistanceToNow } from "date-fns";
 import ruLocale from "date-fns/locale/ru";
 
-export function renderPostsPageComponent({ appEl }) {
+export function renderPostsPageComponent({ appEl, likeButtonClick }) {
   console.log(posts);
   const postsHtml = posts.map((el) => {
     return `<li class="post">
@@ -58,6 +58,18 @@ export function renderPostsPageComponent({ appEl }) {
       goToPage(USER_POSTS_PAGE, {
         userId: userEl.dataset.userId,
       });
+    });
+  }
+
+  for (let likeEl of document.querySelectorAll(".like-button")) {
+    likeEl.addEventListener("click", () => {
+      let isLiked;
+      if (likeEl.children[0].currentSrc.includes("like-active")) {
+        isLiked = true;
+      } else {
+        isLiked = false;
+      }
+      likeButtonClick({ id: likeEl.dataset.postId, isLiked });
     });
   }
 }

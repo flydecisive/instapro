@@ -82,9 +82,7 @@ export function uploadImage({ file }) {
   });
 }
 
-export function addPost({ description, imageUrl }) {
-  const { token } = JSON.parse(localStorage.getItem("user"));
-
+export function addPost({ description, imageUrl, token }) {
   return fetch(postsHost, {
     method: "POST",
     body: JSON.stringify({
@@ -92,7 +90,7 @@ export function addPost({ description, imageUrl }) {
       imageUrl: imageUrl,
     }),
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: token,
     },
   }).then((response) => {
     return response.json();
@@ -107,6 +105,32 @@ export function getUserPosts({ id }) {
   });
 }
 
-export function addLike({ id }) {
-  return fetch(postsHost + `/${id}/like`, {});
+export function addLike({ id, token }) {
+  return fetch(postsHost + `/${id}/like`, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  }).then((response) => {
+    if (response.status === 401) {
+      throw new Error("Нет авторизации");
+    }
+
+    return response.json();
+  });
+}
+
+export function dislike({ id, token }) {
+  return fetch(postsHost + `/${id}/dislike`, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  }).then((response) => {
+    if (response.status === 401) {
+      throw new Error("Нет авторизации");
+    }
+
+    return response.json();
+  });
 }

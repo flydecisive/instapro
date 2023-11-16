@@ -3,7 +3,7 @@ import { posts } from "../index";
 import { formatDistanceToNow } from "date-fns";
 import ruLocale from "date-fns/locale/ru";
 
-export function renderUserPostsPageComponent({ appEl }) {
+export function renderUserPostsPageComponent({ appEl, likeButtonClick }) {
   const name = posts[0].user.name;
   const imageUrl = posts[0].user.imageUrl;
 
@@ -36,6 +36,10 @@ export function renderUserPostsPageComponent({ appEl }) {
         </li>`;
   });
 
+  renderHeaderComponent({
+    element: document.querySelector(".header-container"),
+  });
+
   const appHtml = `
               <div class="page-container">
                 <div class="header-container"></div>
@@ -50,7 +54,15 @@ export function renderUserPostsPageComponent({ appEl }) {
 
   appEl.innerHTML = appHtml;
 
-  renderHeaderComponent({
-    element: document.querySelector(".header-container"),
-  });
+  for (let likeEl of document.querySelectorAll(".like-button")) {
+    likeEl.addEventListener("click", () => {
+      let isLiked;
+      if (likeEl.children[0].currentSrc.includes("like-active")) {
+        isLiked = true;
+      } else {
+        isLiked = false;
+      }
+      likeButtonClick({ id: likeEl.dataset.postId, isLiked });
+    });
+  }
 }
