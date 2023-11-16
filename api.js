@@ -97,12 +97,23 @@ export function addPost({ description, imageUrl, token }) {
   });
 }
 
-export function getUserPosts({ id }) {
-  return fetch(postsHost + `/user-posts/${id}`, {
-    method: "GET",
-  }).then((response) => {
-    return response.json();
-  });
+export function getUserPosts({ id, token }) {
+  if (token) {
+    return fetch(postsHost + `/user-posts/${id}`, {
+      method: "GET",
+      headers: {
+        Authorization: token,
+      },
+    }).then((response) => {
+      return response.json();
+    });
+  } else {
+    return fetch(postsHost + `/user-posts/${id}`, {
+      method: "GET",
+    }).then((response) => {
+      return response.json();
+    });
+  }
 }
 
 export function addLike({ id, token }) {

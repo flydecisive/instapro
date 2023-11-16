@@ -3,7 +3,11 @@ import { posts } from "../index";
 import { formatDistanceToNow } from "date-fns";
 import ruLocale from "date-fns/locale/ru";
 
-export function renderUserPostsPageComponent({ appEl, likeButtonClick }) {
+export function renderUserPostsPageComponent({
+  appEl,
+  likeButtonClick,
+  currentUser,
+}) {
   const name = posts[0].user.name;
   const imageUrl = posts[0].user.imageUrl;
 

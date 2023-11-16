@@ -81,11 +81,18 @@ export const goToPage = (newPage, data) => {
     }
 
     if (newPage === USER_POSTS_PAGE) {
-      getUserPosts({ id: data.userId }).then((data) => {
-        posts = data.posts;
-        page = USER_POSTS_PAGE;
-        renderApp();
-      });
+      page = LOADING_PAGE;
+      renderApp();
+
+      return getUserPosts({ id: data.userId, token: getToken() })
+        .then((data) => {
+          page = USER_POSTS_PAGE;
+          posts = data.posts;
+          renderApp();
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
 
     page = newPage;
@@ -155,6 +162,7 @@ const renderApp = () => {
   if (page === USER_POSTS_PAGE) {
     return renderUserPostsPageComponent({
       appEl,
+      currentUser: user,
       likeButtonClick({ id, isLiked }) {
         if (isLiked) {
           dislike({ id, token: getToken() }).then((data) => {
