@@ -69,7 +69,6 @@ export const goToPage = (newPage, data) => {
     }
 
     if (newPage === USER_POSTS_PAGE) {
-      console.log("Открываю страницу пользователя: ", data.userId);
       getUserPosts({ id: data.userId }).then((data) => {
         posts = data.posts;
         page = USER_POSTS_PAGE;
