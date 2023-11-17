@@ -2,6 +2,7 @@ import { renderHeaderComponent } from "./header-component";
 import { posts } from "../index";
 import { formatDistanceToNow } from "date-fns";
 import ruLocale from "date-fns/locale/ru";
+import { escapeHtml } from "../helpers";
 
 export function renderUserPostsPageComponent({
   appEl,
@@ -10,7 +11,6 @@ export function renderUserPostsPageComponent({
 }) {
   const name = posts[0].user.name;
   const imageUrl = posts[0].user.imageUrl;
-  console.log(posts);
 
   const postsHtml = posts.map((el) => {
     return `<li class="post">
@@ -30,8 +30,8 @@ export function renderUserPostsPageComponent({
             </p>
           </div>
           <p class="post-text">
-            <span class="user-name">${el.user.name}</span>
-            ${el.description}
+          <span class="user-name">${escapeHtml(el.user.name)}</span>
+          ${escapeHtml(el.description)}
           </p>
           <p class="post-date">
             ${formatDistanceToNow(new Date(el.createdAt), {
@@ -46,10 +46,12 @@ export function renderUserPostsPageComponent({
                 <div class="header-container"></div>
                 <div class="posts-user-header">
                     <img src=${imageUrl} class="posts-user-header__user-image" />
-                    <p class="posts-user-header__user-name">${name}</p>
+                    <p class="posts-user-header__user-name">${escapeHtml(
+                      name
+                    )}</p>
                 </div>
                 <ul class="posts">
-                    ${postsHtml}
+                    ${postsHtml.join("")}
                 </ul>
               </div>`;
 

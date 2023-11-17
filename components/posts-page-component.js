@@ -3,13 +3,14 @@ import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage } from "../index.js";
 import { formatDistanceToNow } from "date-fns";
 import ruLocale from "date-fns/locale/ru";
+import { escapeHtml } from "../helpers.js";
 
 export function renderPostsPageComponent({ appEl, likeButtonClick }) {
   const postsHtml = posts.map((el) => {
     return `<li class="post">
       <div class="post-header" data-user-id=${el.user.id}>
           <img src=${el.user.imageUrl} class="post-header__user-image">
-          <p class="post-header__user-name">${el.user.name}</p>
+          <p class="post-header__user-name">${escapeHtml(el.user.name)}</p>
       </div>
       <div class="post-image-container">
         <img class="post-image" src=${el.imageUrl}>
@@ -27,8 +28,8 @@ export function renderPostsPageComponent({ appEl, likeButtonClick }) {
         </p>
       </div>
       <p class="post-text">
-        <span class="user-name">${el.user.name}</span>
-        ${el.description}
+        <span class="user-name">${escapeHtml(el.user.name)}</span>
+        ${escapeHtml(el.description)}
       </p>
       <p class="post-date">
         ${formatDistanceToNow(new Date(el.createdAt), {
@@ -42,7 +43,7 @@ export function renderPostsPageComponent({ appEl, likeButtonClick }) {
               <div class="page-container">
                 <div class="header-container"></div>
                 <ul class="posts">
-                  ${postsHtml}
+                  ${postsHtml.join("")}
                 </ul>
               </div>`;
 

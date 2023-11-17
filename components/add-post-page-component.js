@@ -1,5 +1,6 @@
 import { renderHeaderComponent } from "./header-component";
 import { renderUploadImageComponent } from "./upload-image-component";
+import { escapeHtml } from "../helpers";
 
 export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
   const postPageData = { description: "", imageUrl: "" };
